@@ -15,12 +15,12 @@ var (
 	// TODO: one thing the old lexer architecture fixed was the space at the end
 	simpleTest = `// 🔥 comments r kewl 🔥
 	var 👌 = "hey, it's \"me\" 😏" +	5 + 10.2/* WOAH YEAH */;
-	string thing = "woah! That's super effective!"
+	string pokeman = "woah! That's super effective!"
 	floatyMcFloatFace := 66.67383824732894
 	object 宇宙カウボーイ = {
 		космос: "ковбой"
 	}
-	char[] bae_toe_ven = "i got luv tha street"`
+	char[] bae_toe_ven = "i got luv 4 tha street"`
 )
 
 func TestNew(t *testing.T) {
