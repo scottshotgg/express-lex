@@ -17,8 +17,8 @@ var (
 	var 👌 = "hey, it's \"me\" 😏" +	5 + 10.2/* WOAH YEAH */;
 	string thing = "woah! That's super effective!"
 	floatyMcFloatFace := 66.67383824732894
-	object hold = {
-		my: "shit"
+	object 宇宙カウボーイ = {
+		космос: "ковбой"
 	}`
 )
 
