@@ -152,7 +152,7 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 		char := string(meta.source[index])
 
 		// Else see if it's recognized lexeme
-		lexemeToken, ok := token.LexemeMap[char]
+		lexemeToken, ok := LexemeMap[char]
 
 		// If it is not a recognized lexeme, add it to the accumulator and move on
 		if !ok {
