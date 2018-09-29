@@ -19,7 +19,8 @@ var (
 	floatyMcFloatFace := 66.67383824732894
 	object 宇宙カウボーイ = {
 		космос: "ковбой"
-	}`
+	}
+	char[] bae_toe_ven = "i got luv tha street"`
 )
 
 func TestNew(t *testing.T) {
