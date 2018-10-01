@@ -16,7 +16,7 @@ var (
 	simpleTest = `// 🔥 comments r kewl 🔥
 	var 👌 = "hey, it's \"me\" 😏" +	5 + 10.2/* WOAH YEAH */;
 	string pokeman = "woah! That's super effective!"
-	floatyMcFloatFace := 66.67383824732894
+	floatyMcFloatFace := -66.67383824732894
 	object 宇宙カウボーイ = {
 		космос: "ковбой"
 	}
@@ -24,8 +24,6 @@ var (
 )
 
 func TestNew(t *testing.T) {
-	fmt.Println("TestNew")
-
 	l = lex.New(simpleTest)
 	fmt.Printf("Lexer: %+v\n", l)
 }

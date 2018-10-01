@@ -11,45 +11,21 @@ import (
 	"github.com/scottshotgg/express-token"
 )
 
-// TokenType ...
-type TokenType int
-
-const (
-	TYPE TokenType = iota
-	ASSIGN
-	SPACE
-	LIT
-)
-
-var (
-	lexSymbols = map[string]TokenType{
-		"int": TYPE,
-		"=":   ASSIGN,
-		" ":   SPACE,
-	}
-)
-
-type Lexeme struct {
-	Type  string      `json:"type,omitempty"`
-	Value string      `json:"value,omitempty"`
-	True  interface{} `json:"true,omitempty"`
-}
-
-// Lexer ...
+// Lexer holds all the needed variables to appropriately lex
 type Lexer struct {
 	source      []rune
 	Accumulator string
-	Escaped     bool
 	Tokens      []token.Token
-	LastToken   token.Token
 }
 
+// New returns a new lexer attached to the provided source
 func New(source string) *Lexer {
 	return &Lexer{
 		source: []rune(source),
 	}
 }
 
+// NewFromFile returns a lexer attached to a specific file
 func NewFromFile(path string) (*Lexer, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -66,6 +42,8 @@ func NewFromFile(path string) (*Lexer, error) {
 	return New(string(data)), nil
 }
 
+// LexLiteral is used for determining whether something is a ident or literal
+// If it is a literal is it a string, char, int, float, or bool
 func (meta *Lexer) LexLiteral() (token.Token, error) {
 	// Make a token and set the default value to bool; this is just because its the
 	// first case in the switch and everything below sets it, so it makes the code a bit
@@ -146,7 +124,7 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 	return t, nil
 }
 
-// Lex attemps to lex the token
+// Lex is the primary function used to lex the source string into tokens
 func (meta *Lexer) Lex() ([]token.Token, error) {
 	for index := 0; index < len(meta.source); index++ {
 		char := string(meta.source[index])
@@ -209,10 +187,7 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 			stringLiteral := ""
 
 			index++
-			// for index < len(meta.source) {
 			for string(meta.source[index]) != lexemeToken.Value.String {
-				// if  {
-
 				// If there is an escaping backslash in the string then just increment over
 				// it so that the next accumulate and increment will pickup the next char naturally
 				if string(meta.source[index]) == "\\" {
@@ -220,7 +195,6 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 				}
 
 				stringLiteral += string(meta.source[index])
-				// }
 
 				index++
 			}
