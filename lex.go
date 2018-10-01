@@ -18,6 +18,49 @@ type Lexer struct {
 	Tokens      []token.Token
 }
 
+// Lexemes are the specific symbols the lexer needs to recognize
+var Lexemes = []string{
+	"var",
+	"int",
+	"float",
+	"string",
+	"bool",
+	"char",
+	"object",
+
+	":",
+	"=",
+	"+",
+	"-",
+	"*",
+	"/",
+	"(",
+	")",
+	"{",
+	"}",
+	"[",
+	"]",
+	"\"",
+	"'",
+	";",
+	",",
+	"#",
+	"!",
+	"<",
+	">",
+	"@",
+	"\\",
+	// "„",
+	" ",
+	"\n",
+	"\t",
+
+	// "select",
+	// "SELECT",
+	// "FROM",
+	// "WHERE",
+}
+
 // New returns a new lexer attached to the provided source
 func New(source string) *Lexer {
 	return &Lexer{
@@ -106,11 +149,11 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 			t.Value.True, err = strconv.ParseFloat(meta.Accumulator, 64)
 			t.Value.Type = token.FloatType
 			if err != nil {
+				var ok bool
+
 				// If it's not a float, check whether it is a keyword
-				keyword, ok := token.TokenMap[meta.Accumulator]
-				if ok {
-					t = keyword
-				} else {
+				t, ok = token.TokenMap[meta.Accumulator]
+				if !ok {
 					// If it is not a keyword or a parse-able number, assume that it is an ident (for now)
 					t.Type = token.Ident
 					t.Value = token.Value{
@@ -130,7 +173,7 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 		char := string(meta.source[index])
 
 		// Else see if it's recognized lexeme
-		lexemeToken, ok := LexemeMap[char]
+		lexemeToken, ok := token.TokenMap[char]
 
 		// If it is not a recognized lexeme, add it to the accumulator and move on
 		if !ok {
