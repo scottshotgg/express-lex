@@ -149,11 +149,11 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 			t.Value.True, err = strconv.ParseFloat(meta.Accumulator, 64)
 			t.Value.Type = token.FloatType
 			if err != nil {
-				var ok bool
-
 				// If it's not a float, check whether it is a keyword
-				t, ok = token.TokenMap[meta.Accumulator]
-				if !ok {
+				keyword, ok := token.TokenMap[meta.Accumulator]
+				if ok {
+					t = keyword
+				} else {
 					// If it is not a keyword or a parse-able number, assume that it is an ident (for now)
 					t.Type = token.Ident
 					t.Value = token.Value{
