@@ -263,6 +263,11 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 			})
 
 			continue
+
+		case "period":
+			// For now just accumulate the period and evaluate it later during parsing
+			meta.Accumulator += char
+			continue
 		}
 
 		// If the accumulator is not empty, check it
