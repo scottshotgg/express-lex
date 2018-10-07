@@ -26,7 +26,8 @@ var (
 
 	char[] bae_toe_ven = "i got luv 4 tha street"
 
-	宇宙カウボーイ["космос"] = bae_toe_ven + 666`
+	宇宙カウボーイ["космос"] = bae_toe_ven + 666
+	char[] me`
 )
 
 func TestNew(t *testing.T) {
