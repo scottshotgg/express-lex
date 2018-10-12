@@ -1,9 +1,7 @@
 package lex
 
 import (
-	"fmt"
 	"io/ioutil"
-	"os"
 	"strconv"
 
 	"github.com/pkg/errors"
@@ -70,15 +68,8 @@ func New(source string) *Lexer {
 
 // NewFromFile returns a lexer attached to a specific file
 func NewFromFile(path string) (*Lexer, error) {
-	f, err := os.Open(path)
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Println("openErr", err)
-		return nil, err
-	}
-
-	data, err := ioutil.ReadAll(f)
-	if err != nil {
-		fmt.Println("openErr", err)
 		return nil, err
 	}
 
