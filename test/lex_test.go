@@ -13,7 +13,11 @@ import (
 var (
 	l *lex.Lexer
 	// TODO: one thing the old lexer architecture fixed was the space at the end
-	simpleTest = `// 🔥 comments r kewl 🔥
+	simpleTest = `
+	import "me"
+	include "me"
+
+	// 🔥 comments r kewl 🔥
 	var 👌 = "hey, it's \"me\" 😏" +	5 + 10.2/* WOAH YEAH */ ;
 
 	string pokemans = "Woah! That's super effective!"
