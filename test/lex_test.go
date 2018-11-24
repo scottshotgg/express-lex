@@ -14,6 +14,8 @@ var (
 	l *lex.Lexer
 	// TODO: one thing the old lexer architecture fixed was the space at the end
 	simpleTest = `
+	i++
+	
 	import "me"
 	include "me"
 
