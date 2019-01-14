@@ -83,7 +83,7 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 	// first case in the switch and everything below sets it, so it makes the code a bit
 	// cleaner
 	// We COULD do this with tokens in the tokenMap for true and false
-	t := token.Token{
+	var t = token.Token{
 		Type: token.Literal,
 		Value: token.Value{
 			True:   false,
@@ -103,7 +103,7 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 	// Else move on and figure out what kind of number it is (or an ident)
 	default:
 		// Figure out from the two starting characters
-		base := 10
+		var base = 10
 		if len(meta.Accumulator) > 2 {
 			switch meta.Accumulator[:2] {
 			// Binary
@@ -126,9 +126,9 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 		}
 
 		// Attempt to parse an int from the accumulator
-		value, err := strconv.ParseInt(meta.Accumulator, base, 64)
+		var value, err = strconv.ParseInt(meta.Accumulator, base, 64)
 
-		// Convert the int64 to an int for now
+		// TODO: Convert the int64 to an int for now
 		// I'll switch this when I'm ready to deal with different bit sizes
 		t.Value.True = int(value)
 		t.Value.Type = token.IntType
@@ -161,10 +161,34 @@ func (meta *Lexer) LexLiteral() (token.Token, error) {
 // Lex is the primary function used to lex the source string into tokens
 func (meta *Lexer) Lex() ([]token.Token, error) {
 	for index := 0; index < len(meta.source); index++ {
-		char := string(meta.source[index])
+		var char = string(meta.source[index])
 
 		// Else see if it's recognized lexeme
-		lexemeToken, ok := token.TokenMap[char]
+		var lexemeToken, ok = token.TokenMap[char]
+
+		// // Only the operators are allowed to be without spaces after them; this may change, kinda hate no spaces between the symbols
+		// // Also enclosers (rbrace, lbrace, etc) are allowed as well. End tokens (; and ,) as well
+		// // Make something in the token library for this, a specific struct field
+
+		// // If white space IS required after the token ...
+		// if ok && lexemeToken.Type != token.Whitespace && !lexemeToken.WSNotRequired {
+		// 	// If the current token is not allowed to not have whitespace after it, the next character has to be some sort of whitespace (space, newline, tab)
+		// 	// next character is not a white space and we require it then there is an error
+		// 	if index+1 < len(meta.source) && !unicode.IsSpace(meta.source[index+1]) {
+		// 		// Not sure if using the unicode library is the right way to go ...
+		// 		// return nil, errors.Errorf("Expected white space after token (%s), found: %s", string(meta.source[index]), string(meta.source[index+1]))
+		// 		// It should not be a recognized token, add it to the accumulator and move on as if it was as normal char
+
+		// 		// Test if the next character is a recognized token?
+		// 		_, ok = token.TokenMap[string(meta.source[index+1])]
+		// 		if ok {
+		// 			return nil, errors.Errorf("Expected white space after token (%s), found: %s", string(meta.source[index]), string(meta.source[index+1]))
+		// 		}
+
+		// 		meta.Accumulator += char
+		// 		continue
+		// 	}
+		// }
 
 		// If it is not a recognized lexeme, add it to the accumulator and move on
 		if !ok {
@@ -265,7 +289,7 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 		if meta.Accumulator != "" {
 			ts, err := meta.LexLiteral()
 			if err != nil {
-				return []token.Token{}, err
+				return nil, err
 			}
 
 			meta.Tokens = append(meta.Tokens, ts)
@@ -280,7 +304,7 @@ func (meta *Lexer) Lex() ([]token.Token, error) {
 	if meta.Accumulator != "" {
 		ts, err := meta.LexLiteral()
 		if err != nil {
-			return []token.Token{}, err
+			return nil, err
 		}
 
 		meta.Tokens = append(meta.Tokens, ts)
