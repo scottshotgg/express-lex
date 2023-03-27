@@ -6,16 +6,21 @@ import (
 	"os"
 	"testing"
 
-	"github.com/scottshotgg/express-lex"
-	"github.com/scottshotgg/express-token"
+	lex "github.com/scottshotgg/express-lex"
+	token "github.com/scottshotgg/express-token"
 )
 
 var (
 	l *lex.Lexer
 	// TODO: one thing the old lexer architecture fixed was the space at the end
 	simpleTest = `
+	package something
 	i++
 	
+	c {
+		int i = 0;
+	}
+
 	import "me"
 	include "me"
 
@@ -29,6 +34,8 @@ var (
 	object 宇宙カウボーイ = {
 		космос: "ковбой"
 	}
+
+	interface i = {}
 
 	char[] bae_toe_ven = "i got luv 4 tha street"
 
@@ -46,17 +53,19 @@ func TestLex(t *testing.T) {
 
 	lexemes, err := l.Lex()
 	if err != nil {
-		// TODO:
+		panic(err)
 	}
 
 	// fmt.Printf("lexemes: %+v\n", lexemes)
 	for i, lexeme := range lexemes {
 		fmt.Println("i", i, lexeme)
 	}
+
 	lexemeJSON, err := json.Marshal(lexemes)
 	if err != nil {
 		fmt.Println("jsonErr", err)
 	}
+
 	fmt.Println(string(lexemeJSON))
 }
 
