@@ -35,12 +35,12 @@ var (
 		космос: "ковбой"
 	}
 
-	interface i = {}
-
 	char[] bae_toe_ven = "i got luv 4 tha street"
 
 	宇宙カウボーイ["космос"] = bae_toe_ven + 666
-	char[] me`
+	char[] me
+
+	interface i = {}`
 )
 
 func TestNew(t *testing.T) {
